@@ -3,47 +3,84 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kasir Ringan Bu Rina</title>
+  <title>Kasir Kantin Bu Rina</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 12px; background: #f4f6f8; }
-    h2 { text-align: center; background: #1e7e34; color: white; padding: 10px; border-radius: 6px; margin: 0 0 12px; }
-    .card { background: white; padding: 12px; border-radius: 6px; margin-bottom: 12px; border: 1px solid #ddd; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
-    button { padding: 12px; font-size: 14px; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; }
-    .btn-item { background: #e9ecef; text-align: left; }
-    .btn-bayar { background: #1e7e34; color: white; width: 100%; margin-top: 8px; }
-    .btn-reset { background: #dc3545; color: white; width: 100%; margin-top: 6px; }
-    input { width: 100%; padding: 10px; font-size: 16px; margin-top: 5px; box-sizing: border-box; }
-    table { width: 100%; border-collapse: collapse; margin-top: 8px; }
-    th, td { border-bottom: 1px solid #ddd; padding: 6px; text-align: left; font-size: 14px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f1f5f9; color: #1e293b; padding: 14px; }
+    .wrapper { max-width: 480px; margin: 0 auto; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #16a34a, #15803d); color: white; padding: 14px 16px; border-radius: 12px; margin-bottom: 14px; box-shadow: 0 4px 10px rgba(22,163,74,0.2); }
+    .topbar h2 { font-size: 17px; }
+    .btn-back { background: rgba(255,255,255,0.2); color: white; text-decoration: none; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; }
+    .card { background: white; padding: 16px; border-radius: 12px; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; }
+    .card-title { font-size: 14px; font-weight: 700; color: #475569; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .btn-item { background: #f8fafc; border: 1px solid #cbd5e1; padding: 12px; border-radius: 10px; text-align: left; cursor: pointer; transition: 0.1s; }
+    .btn-item:active { background: #dcfce7; border-color: #16a34a; transform: scale(0.98); }
+    .btn-item strong { display: block; font-size: 14px; color: #0f172a; }
+    .btn-item span { font-size: 13px; color: #16a34a; font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+    th { text-align: left; font-size: 12px; color: #64748b; padding-bottom: 6px; border-bottom: 1px solid #e2e8f0; }
+    td { padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+    .btn-min { background: #fee2e2; color: #dc2626; border: none; width: 24px; height: 24px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-right: 4px; }
+    .total-row { display: flex; justify-content: space-between; align-items: center; background: #f0fdf4; padding: 12px; border-radius: 8px; margin-bottom: 12px; border: 1px solid #bbf7d0; }
+    .total-row span { font-size: 14px; font-weight: 600; color: #166534; }
+    .total-row strong { font-size: 20px; color: #15803d; }
+    input[type=number] { width: 100%; padding: 12px; font-size: 16px; border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 10px; }
+    input[type=number]:focus { outline: none; border-color: #16a34a; }
+    .kembali-text { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #0f172a; }
+    .btn-action { width: 100%; padding: 13px; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; margin-bottom: 8px; }
+    .btn-bayar { background: #16a34a; color: white; }
+    .btn-reset { background: #f1f5f9; color: #475569; }
+    .omzet-box { display: flex; justify-content: space-between; align-items: center; font-size: 15px; }
+    .btn-clear-omzet { background: none; border: none; color: #dc2626; font-size: 12px; text-decoration: underline; cursor: pointer; }
   </style>
 </head>
 <body>
-  <h2>KASIR WARUNG BU RINA</h2>
-  <div class="card">
-    <strong>1. Pilih Barang:</strong>
-    <div class="grid">
-      <button class="btn-item" onclick="tambah('Beras 1kg', 15000)">Beras 1kg<br><small>Rp 15.000</small></button>
-      <button class="btn-item" onclick="tambah('Minyak 1L', 17000)">Minyak 1L<br><small>Rp 17.000</small></button>
-      <button class="btn-item" onclick="tambah('Gula 1kg', 16500)">Gula 1kg<br><small>Rp 16.500</small></button>
-      <button class="btn-item" onclick="tambah('Telur 1/2kg', 14000)">Telur 1/2kg<br><small>Rp 14.000</small></button>
-      <button class="btn-item" onclick="tambah('Mie Instan', 3500)">Mie Instan<br><small>Rp 3.500</small></button>
-      <button class="btn-item" onclick="tambah('Kopi Sachet', 2000)">Kopi Sachet<br><small>Rp 2.000</small></button>
+  <div class="wrapper">
+    <div class="topbar">
+      <h2>🧾 Kasir Kantin Bu Rina</h2>
+      <a href="index.html" class="btn-back">← Menu</a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">1. Pilih Menu Kantin</div>
+      <div class="grid">
+        <button class="btn-item" onclick="tambah('Nasi Goreng', 10000)"><strong>🍛 Nasi Goreng</strong><span>Rp 10.000</span></button>
+        <button class="btn-item" onclick="tambah('Mie Ayam', 10000)"><strong>🍜 Mie Ayam</strong><span>Rp 10.000</span></button>
+        <button class="btn-item" onclick="tambah('Nasi Uduk', 8000)"><strong>🍚 Nasi Uduk</strong><span>Rp 8.000</span></button>
+        <button class="btn-item" onclick="tambah('Gorengan (3bj)', 3000)"><strong>🥟 Gorengan 3bj</strong><span>Rp 3.000</span></button>
+        <button class="btn-item" onclick="tambah('Es Teh Manis', 3000)"><strong>🧊 Es Teh Manis</strong><span>Rp 3.000</span></button>
+        <button class="btn-item" onclick="tambah('Air Mineral', 3000)"><strong>💧 Air Mineral</strong><span>Rp 3.000</span></button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">2. Daftar Pesanan</div>
+      <table>
+        <thead><tr><th>Menu</th><th>Qty</th><th style="text-align:right;">Subtotal</th></tr></thead>
+        <tbody id="list"><tr><td colspan="3" style="text-align:center; color:#94a3b8; padding:14px 0;">Belum ada pesanan dipilih</td></tr></tbody>
+      </table>
+
+      <div class="total-row">
+        <span>Total Bayar</span>
+        <strong>Rp <span id="total">0</span></strong>
+      </div>
+
+      <input type="number" id="bayar" placeholder="Masukkan uang tunai siswa (Rp)" oninput="hitung()">
+      <div class="kembali-text">Kembalian: <span style="color:#16a34a;">Rp <span id="kembali">0</span></span></div>
+
+      <button class="btn-action btn-bayar" onclick="simpan()">✓ SELESAIKAN TRANSAKSI</button>
+      <button class="btn-action btn-reset" onclick="reset()">↺ Bersihkan Pesanan</button>
+    </div>
+
+    <div class="card omzet-box">
+      <div>Omzet Kantin Hari Ini: <strong style="color:#16a34a;">Rp <span id="omzet">0</span></strong></div>
+      <button class="btn-clear-omzet" onclick="resetOmzet()">Reset</button>
     </div>
   </div>
-  <div class="card">
-    <strong>2. Daftar Belanja:</strong>
-    <table><thead><tr><th>Barang</th><th>Qty</th><th>Subtotal</th></tr></thead><tbody id="list"></tbody></table>
-    <h3>Total: Rp <span id="total">0</span></h3>
-    <input type="number" id="bayar" placeholder="Uang Pembeli (Rp)" oninput="hitung()">
-    <h4>Kembalian: Rp <span id="kembali">0</span></h4>
-    <button class="btn-bayar" onclick="simpan()">SIMPAN TRANSAKSI</button>
-    <button class="btn-reset" onclick="reset()">ULANGI</button>
-  </div>
-  <div class="card"><strong>Omzet Hari Ini: Rp <span id="omzet">0</span></strong></div>
 
   <script>
-    let keranjang = [], omzet = Number(localStorage.getItem('omzet_rina')) || 0;
+    let keranjang = [], omzet = Number(localStorage.getItem('omzet_kantin_rina')) || 0;
     document.getElementById('omzet').innerText = omzet.toLocaleString('id-ID');
 
     function tambah(nama, harga) {
@@ -51,28 +88,55 @@
       item ? item.qty++ : keranjang.push({ nama, harga, qty: 1 });
       render();
     }
+    function kurang(nama) {
+      let idx = keranjang.findIndex(x => x.nama === nama);
+      if (idx > -1) {
+        keranjang[idx].qty > 1 ? keranjang[idx].qty-- : keranjang.splice(idx, 1);
+        render();
+      }
+    }
     function render() {
+      let tbody = document.getElementById('list');
+      if (!keranjang.length) {
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#94a3b8; padding:14px 0;">Belum ada pesanan dipilih</td></tr>';
+        document.getElementById('total').innerText = '0';
+        hitung(); return;
+      }
       let html = '', tot = 0;
-      keranjang.forEach(x => { tot += x.harga * x.qty; html += `<tr><td>${x.nama}</td><td>${x.qty}</td><td>Rp ${(x.harga*x.qty).toLocaleString('id-ID')}</td></tr>`; });
-      document.getElementById('list').innerHTML = html;
+      keranjang.forEach(x => {
+        tot += x.harga * x.qty;
+        html += `<tr>
+          <td>${x.nama}</td>
+          <td><button class="btn-min" onclick="kurang('${x.nama}')">-</button>${x.qty}</td>
+          <td style="text-align:right; font-weight:600;">Rp ${(x.harga*x.qty).toLocaleString('id-ID')}</td>
+        </tr>`;
+      });
+      tbody.innerHTML = html;
       document.getElementById('total').innerText = tot.toLocaleString('id-ID');
       hitung();
     }
     function hitung() {
       let tot = keranjang.reduce((a, b) => a + b.harga * b.qty, 0);
       let byr = Number(document.getElementById('bayar').value) || 0;
-      document.getElementById('kembali').innerText = byr >= tot ? (byr - tot).toLocaleString('id-ID') : 'Kurang';
+      document.getElementById('kembali').innerText = byr >= tot ? (byr - tot).toLocaleString('id-ID') : 'Uang Kurang';
     }
     function simpan() {
       let tot = keranjang.reduce((a, b) => a + b.harga * b.qty, 0);
       let byr = Number(document.getElementById('bayar').value) || 0;
-      if (!tot || byr < tot) return alert('Cek daftar belanja atau uang bayar!');
-      omzet += tot; localStorage.setItem('omzet_rina', omzet);
+      if (!tot) return alert('Pilih menu kantin terlebih dahulu!');
+      if (byr < tot) return alert('Uang tunai siswa masih kurang!');
+      omzet += tot; localStorage.setItem('omzet_kantin_rina', omzet);
       document.getElementById('omzet').innerText = omzet.toLocaleString('id-ID');
-      alert('Berhasil! Kembalian: Rp ' + (byr - tot).toLocaleString('id-ID'));
+      alert('Transaksi Berhasil!\nKembalian: Rp ' + (byr - tot).toLocaleString('id-ID'));
       reset();
     }
     function reset() { keranjang = []; document.getElementById('bayar').value = ''; render(); }
+    function resetOmzet() {
+      if (confirm('Reset omzet hari ini menjadi Rp 0?')) {
+        omzet = 0; localStorage.setItem('omzet_kantin_rina', 0);
+        document.getElementById('omzet').innerText = '0';
+      }
+    }
   </script>
 </body>
 </html>
