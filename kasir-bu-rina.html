@@ -194,7 +194,7 @@
     hitungKembali();
   }
 
-  function hitungKembali() {
+    function hitungKembali() {
     let tot = keranjang.reduce((s, k) => s + k.harga * k.qty, 0);
     let byr = Number(document.getElementById('uangSiswa').value) || 0;
     document.getElementById('kembalian').innerText = byr >= tot ? (byr - tot).toLocaleString('id-ID') : 'Kurang';
@@ -207,19 +207,24 @@
 
     keranjang.forEach(k => {
       let m = menuKantin.find(x => x.id === k.id);
-
-  if (m) m.stok = Math.max(0, m.stok - k.qty);
+      if (m) m.stok = Math.max(0, m.stok - k.qty);
     });
     omzet += tot;
     simpanData();
     alert('Transaksi Berhasil! Kembalian: Rp ' + (byr - tot).toLocaleString('id-ID'));
-    resetKasir(); renderSemua();
-    }
-  
-    function resetKasir() {
+    resetKasir();
+    renderSemua();
+  }
+
+  function resetKasir() {
     keranjang = [];
     document.getElementById('uangSiswa').value = '';
     renderKeranjang();
-    }
-    simpanData();
-    renderSemua();
+  }
+
+  simpanData();
+  renderSemua();
+  
+</script>
+</body>
+</html>
