@@ -3,87 +3,119 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Antrean Kantin Digital</title>
+  <title>Pesan & Antrean Kantin (Siswa)</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f1f5f9; color: #1e293b; padding: 14px; }
-    .wrapper { max-width: 480px; margin: 0 auto; }
-    .topbar { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; padding: 14px 16px; border-radius: 12px; margin-bottom: 14px; box-shadow: 0 4px 10px rgba(37,99,235,0.2); }
-    .topbar h2 { font-size: 17px; }
-    .btn-back { background: rgba(255,255,255,0.2); color: white; text-decoration: none; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; }
-    .card { background: white; padding: 16px; border-radius: 12px; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; }
-    .card-title { font-size: 14px; font-weight: 700; color: #475569; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
-    input, select { width: 100%; padding: 11px 12px; margin-bottom: 10px; font-size: 14px; border: 1px solid #cbd5e1; border-radius: 8px; background: #f8fafc; }
-    input:focus, select:focus { outline: none; border-color: #2563eb; background: white; }
-    .btn-pesan { width: 100%; padding: 13px; background: #2563eb; color: white; font-weight: 700; font-size: 15px; border: none; border-radius: 8px; cursor: pointer; }
-    .antrean-card { border: 1px solid #e2e8f0; background: #f8fafc; padding: 12px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-    .kode-antrean { display: inline-block; background: #1e293b; color: white; font-weight: 700; font-size: 13px; padding: 2px 8px; border-radius: 6px; margin-right: 6px; }
-    .badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; margin-top: 6px; }
-    .dimasak { background: #ffedd5; color: #c2410c; }
+    body { font-family: Arial, sans-serif; background: #f1f5f9; color: #1e293b; padding: 12px; }
+    .wrap { max-width: 500px; margin: 0 auto; }
+    .header { display: flex; justify-content: space-between; align-items: center; background: #2563eb; color: white; padding: 12px 15px; border-radius: 10px; margin-bottom: 12px; }
+    .header a { color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 6px; font-size: 13px; }
+    .card { background: white; padding: 14px; border-radius: 10px; margin-bottom: 12px; border: 1px solid #e2e8f0; }
+    h3 { font-size: 15px; margin-bottom: 10px; color: #0f172a; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px; }
+    input, select { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
+    .btn-pesan { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; }
+    .stok-list { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 4px; font-size: 12px; }
+    .stok-item { padding: 8px; border-radius: 6px; border: 1px solid #e2e8f0; background: #f8fafc; }
+    .item-antrean { padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 8px; background: #f8fafc; display: flex; justify-content: space-between; align-items: center; }
+    .badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; }
+    .dimasak { background: #fef3c7; color: #b45309; }
     .siap { background: #dcfce7; color: #15803d; }
-    .btn-aksi { padding: 7px 11px; font-size: 12px; font-weight: 600; color: white; border: none; border-radius: 6px; cursor: pointer; margin-left: 4px; }
-    .btn-siap { background: #16a34a; }
-    .btn-selesai { background: #64748b; }
   </style>
 </head>
 <body>
-  <div class="wrapper">
-    <div class="topbar">
-      <h2>🍱 Antrean Kantin Sekolah</h2>
-      <a href="index.html" class="btn-back">← Menu</a>
-    </div>
-
-    <div class="card">
-      <div class="card-title">1. Form Pre-Order Siswa</div>
-      <input type="text" id="nama" placeholder="Nama & Kelas (Contoh: Ikhsan - XII RPL 1)">
-      <select id="menu">
-        <option>🍛 Nasi Goreng Kantin (Rp 10.000)</option>
-        <option>🍜 Mie Ayam Bakso (Rp 10.000)</option>
-        <option>🍚 Nasi Uduk Ayam (Rp 8.000)</option>
-        <option>🥟 Paket Gorengan + Es Teh (Rp 6.000)</option>
-      </select>
-      <button class="btn-pesan" onclick="pesan()">+ AMBIL NOMOR ANTREAN</button>
-    </div>
-
-    <div class="card">
-      <div class="card-title">2. Monitor Antrean & Panel Penjual</div>
-      <div id="antrean"></div>
-    </div>
+<div class="wrap">
+  <div class="header">
+    <strong>🍱 Pesan & Antrean Kantin</strong>
+    <a href="index.html">← Menu</a>
   </div>
 
-  <script>
-    let daftar = JSON.parse(localStorage.getItem('kantin_list_v2')) || [];
-    let no = Number(localStorage.getItem('kantin_no_v2')) || 1;
+  <div class="card">
+    <h3>1. Cek Ketersediaan Menu Hari Ini</h3>
+    <div class="stok-list" id="infoStok"></div>
+  </div>
 
-    function pesan() {
-      let nama = document.getElementById('nama').value.trim();
-      let menu = document.getElementById('menu').value;
-      if (!nama) return alert('Isi nama dan kelas terlebih dahulu!');
-      let kode = 'A-' + String(no++).padStart(2, '0');
-      daftar.push({ id: Date.now(), kode, nama, menu, status: 'Sedang Dimasak' });
-      document.getElementById('nama').value = '';
-      update(); alert('Pesanan Diterima!\nNomor Antrean Anda: ' + kode);
-    }
-    function siap(id) { let x = daftar.find(i => i.id === id); if (x) x.status = 'Siap Diambil'; update(); }
-    function hapus(id) { daftar = daftar.filter(i => i.id !== id); update(); }
-    function update() {
-      localStorage.setItem('kantin_list_v2', JSON.stringify(daftar));
-      localStorage.setItem('kantin_no_v2', no);
-      let el = document.getElementById('antrean');
-      el.innerHTML = daftar.length ? daftar.map(x => `
-        <div class="antrean-card">
+  <div class="card">
+    <h3>2. Form Pemesanan Siswa</h3>
+    <input type="text" id="namaSiswa" placeholder="Nama & Kelas (Contoh: Ikhsan - XII RPL 1)">
+    <select id="pilihMenu"></select>
+    <button class="btn-pesan" onclick="kirimPesanan()">+ PESAN & AMBIL ANTREAN</button>
+  </div>
+
+  <div class="card">
+    <h3>3. Monitor Status Antrean (Hanya Lihat)</h3>
+    <p style="font-size:12px; color:#64748b; margin-bottom:8px;">Status pesanan hanya dapat diubah oleh Bu Rina di aplikasi kasir.</p>
+    <div id="monitorAntrean"></div>
+  </div>
+</div>
+
+<script>
+  const defaultMenu = [
+    { id: 1, nama: 'Nasi Goreng', harga: 10000, stok: 10 },
+    { id: 2, nama: 'Mie Ayam', harga: 10000, stok: 8 },
+    { id: 3, nama: 'Nasi Uduk', harga: 8000, stok: 5 },
+    { id: 4, nama: 'Gorengan (3bj)', harga: 3000, stok: 15 },
+    { id: 5, nama: 'Es Teh Manis', harga: 3000, stok: 20 },
+    { id: 6, nama: 'Air Mineral', harga: 3000, stok: 0 }
+  ];
+
+  let menuKantin = JSON.parse(localStorage.getItem('kantin_menu_data')) || defaultMenu;
+  let antrean = JSON.parse(localStorage.getItem('kantin_orders_data')) || [];
+  let noUrut = Number(localStorage.getItem('kantin_no_urut')) || 1;
+
+  function renderHalaman() {
+    menuKantin = JSON.parse(localStorage.getItem('kantin_menu_data')) || defaultMenu;
+    antrean = JSON.parse(localStorage.getItem('kantin_orders_data')) || [];
+
+    document.getElementById('infoStok').innerHTML = menuKantin.map(m => `
+      <div class="stok-item">
+        <strong>${m.nama}</strong><br>
+        <span style="color:${m.stok > 0 ? '#16a34a' : '#dc2626'}; font-weight:bold;">
+          ${m.stok > 0 ? 'Tersedia (' + m.stok + ')' : 'Tak Tersedia'}
+        </span>
+      </div>
+    `).join('');
+
+    let tersedia = menuKantin.filter(m => m.stok > 0);
+    document.getElementById('pilihMenu').innerHTML = tersedia.length
+      ? tersedia.map(m => `<option value="${m.id}">${m.nama} - Rp ${m.harga.toLocaleString('id-ID')}</option>`).join('')
+      : '<option value="">Semua menu sedang tak tersedia</option>';
+
+    document.getElementById('monitorAntrean').innerHTML = antrean.length
+      ? antrean.map(a => `
+        <div class="item-antrean">
           <div>
-            <div><span class="kode-antrean">${x.kode}</span><strong>${x.nama}</strong></div>
-            <div style="font-size:13px; color:#475569; margin-top:3px;">${x.menu}</div>
-            <span class="badge ${x.status === 'Sedang Dimasak' ? 'dimasak' : 'siap'}">${x.status}</span>
+            <strong>[${a.kode}] ${a.siswa}</strong><br>
+            <small>${a.item}</small>
           </div>
-          <div style="display:flex;">
-            ${x.status === 'Sedang Dimasak' ? `<button class="btn-aksi btn-siap" onclick="siap(${x.id})">Siap</button>` : ''}
-            <button class="btn-aksi btn-selesai" onclick="hapus(${x.id})">Ambil</button>
-          </div>
-        </div>`).join('') : '<p style="text-align:center; color:#94a3b8; font-size:13px; padding:12px 0;">Belum ada antrean pesanan.</p>';
-    }
-    update();
-  </script>
+          <span class="badge ${a.status === 'Siap Diambil' ? 'siap' : 'dimasak'}">${a.status}</span>
+        </div>
+      `).join('')
+      : '<small style="color:#64748b;">Belum ada antrean aktif.</small>';
+  }
+
+  function kirimPesanan() {
+    let siswa = document.getElementById('namaSiswa').value.trim();
+    let menuId = Number(document.getElementById('pilihMenu').value);
+    if (!siswa) return alert('Isi nama dan kelas terlebih dahulu!');
+    if (!menuId) return alert('Menu sedang tak tersedia!');
+
+    let m = menuKantin.find(x => x.id === menuId);
+    if (!m || m.stok <= 0) return alert('Maaf, stok baru saja habis!');
+
+    m.stok -= 1;
+    let kode = 'A-' + String(noUrut++).padStart(2, '0');
+    antrean.push({ id: Date.now(), kode, siswa, item: m.nama, harga: m.harga, status: 'Dimasak' });
+
+    localStorage.setItem('kantin_menu_data', JSON.stringify(menuKantin));
+    localStorage.setItem('kantin_orders_data', JSON.stringify(antrean));
+    localStorage.setItem('kantin_no_urut', noUrut);
+
+    document.getElementById('namaSiswa').value = '';
+    renderHalaman();
+    alert('Pesanan terkirim ke Bu Rina!\nNomor Antrean Anda: ' + kode);
+  }
+
+  renderHalaman();
+</script>
 </body>
 </html>
