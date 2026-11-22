@@ -6,137 +6,220 @@
   <title>Kasir Kantin Bu Rina</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f1f5f9; color: #1e293b; padding: 14px; }
-    .wrapper { max-width: 480px; margin: 0 auto; }
-    .topbar { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #16a34a, #15803d); color: white; padding: 14px 16px; border-radius: 12px; margin-bottom: 14px; box-shadow: 0 4px 10px rgba(22,163,74,0.2); }
-    .topbar h2 { font-size: 17px; }
-    .btn-back { background: rgba(255,255,255,0.2); color: white; text-decoration: none; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; }
-    .card { background: white; padding: 16px; border-radius: 12px; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; }
-    .card-title { font-size: 14px; font-weight: 700; color: #475569; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+    body { font-family: Arial, sans-serif; background: #f1f5f9; color: #1e293b; padding: 12px; }
+    .wrap { max-width: 500px; margin: 0 auto; }
+    .header { display: flex; justify-content: space-between; align-items: center; background: #16a34a; color: white; padding: 12px 15px; border-radius: 10px; margin-bottom: 12px; }
+    .header a { color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 6px; font-size: 13px; }
+    .tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+    .tab-btn { flex: 1; padding: 11px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; background: #cbd5e1; color: #334155; }
+    .tab-btn.active { background: #15803d; color: white; }
+    .card { background: white; padding: 14px; border-radius: 10px; margin-bottom: 12px; border: 1px solid #e2e8f0; }
+    h3 { font-size: 15px; margin-bottom: 10px; color: #0f172a; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px; }
     .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .btn-item { background: #f8fafc; border: 1px solid #cbd5e1; padding: 12px; border-radius: 10px; text-align: left; cursor: pointer; transition: 0.1s; }
-    .btn-item:active { background: #dcfce7; border-color: #16a34a; transform: scale(0.98); }
-    .btn-item strong { display: block; font-size: 14px; color: #0f172a; }
-    .btn-item span { font-size: 13px; color: #16a34a; font-weight: 600; }
-    table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
-    th { text-align: left; font-size: 12px; color: #64748b; padding-bottom: 6px; border-bottom: 1px solid #e2e8f0; }
-    td { padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
-    .btn-min { background: #fee2e2; color: #dc2626; border: none; width: 24px; height: 24px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-right: 4px; }
-    .total-row { display: flex; justify-content: space-between; align-items: center; background: #f0fdf4; padding: 12px; border-radius: 8px; margin-bottom: 12px; border: 1px solid #bbf7d0; }
-    .total-row span { font-size: 14px; font-weight: 600; color: #166534; }
-    .total-row strong { font-size: 20px; color: #15803d; }
-    input[type=number] { width: 100%; padding: 12px; font-size: 16px; border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 10px; }
-    input[type=number]:focus { outline: none; border-color: #16a34a; }
-    .kembali-text { font-size: 16px; font-weight: 700; margin-bottom: 12px; color: #0f172a; }
-    .btn-action { width: 100%; padding: 13px; border: none; border-radius: 8px; font-size: 15px; font-weight: 700; cursor: pointer; margin-bottom: 8px; }
-    .btn-bayar { background: #16a34a; color: white; }
-    .btn-reset { background: #f1f5f9; color: #475569; }
-    .omzet-box { display: flex; justify-content: space-between; align-items: center; font-size: 15px; }
-    .btn-clear-omzet { background: none; border: none; color: #dc2626; font-size: 12px; text-decoration: underline; cursor: pointer; }
+    .btn-menu { padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; background: #f8fafc; text-align: left; cursor: pointer; }
+    .btn-menu:disabled { background: #fee2e2; border-color: #fca5a5; opacity: 0.75; cursor: not-allowed; }
+    .habis { color: #dc2626; font-size: 11px; font-weight: bold; }
+    .ada { color: #16a34a; font-size: 11px; font-weight: bold; }
+    table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 14px; }
+    td, th { padding: 6px 4px; border-bottom: 1px solid #f1f5f9; text-align: left; }
+    input[type=number] { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin: 8px 0; font-size: 15px; }
+    .btn-full { width: 100%; padding: 11px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 6px; }
+    .btn-green { background: #16a34a; color: white; }
+    .btn-gray { background: #e2e8f0; color: #334155; }
+    .order-box { border: 1px solid #cbd5e1; padding: 10px; border-radius: 8px; margin-bottom: 8px; background: #f8fafc; display: flex; justify-content: space-between; align-items: center; }
+    .btn-sm { padding: 6px 10px; border: none; border-radius: 6px; color: white; font-size: 12px; font-weight: bold; cursor: pointer; margin-left: 4px; }
+    .stok-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f1f5f9; }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
-  <div class="wrapper">
-    <div class="topbar">
-      <h2>🧾 Kasir Kantin Bu Rina</h2>
-      <a href="index.html" class="btn-back">← Menu</a>
+<div class="wrap">
+  <div class="header">
+    <strong>🧾 Kasir & Dapur Bu Rina</strong>
+    <a href="index.html">← Menu</a>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" id="btnTab1" onclick="bukaTab(1)">1. Melayani & Pesanan</button>
+    <button class="tab-btn" id="btnTab2" onclick="bukaTab(2)">2. Kelola Stok Barang</button>
+  </div>
+
+  <!-- TAB 1: MELAYANI -->
+  <div id="tab1">
+    <div class="card">
+      <h3>📩 Pesanan Masuk dari Siswa (Antrean)</h3>
+      <div id="listAntrean"></div>
     </div>
 
     <div class="card">
-      <div class="card-title">1. Pilih Menu Kantin</div>
-      <div class="grid">
-        <button class="btn-item" onclick="tambah('Nasi Goreng', 10000)"><strong>🍛 Nasi Goreng</strong><span>Rp 10.000</span></button>
-        <button class="btn-item" onclick="tambah('Mie Ayam', 10000)"><strong>🍜 Mie Ayam</strong><span>Rp 10.000</span></button>
-        <button class="btn-item" onclick="tambah('Nasi Uduk', 8000)"><strong>🍚 Nasi Uduk</strong><span>Rp 8.000</span></button>
-        <button class="btn-item" onclick="tambah('Gorengan (3bj)', 3000)"><strong>🥟 Gorengan 3bj</strong><span>Rp 3.000</span></button>
-        <button class="btn-item" onclick="tambah('Es Teh Manis', 3000)"><strong>🧊 Es Teh Manis</strong><span>Rp 3.000</span></button>
-        <button class="btn-item" onclick="tambah('Air Mineral', 3000)"><strong>💧 Air Mineral</strong><span>Rp 3.000</span></button>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">2. Daftar Pesanan</div>
+      <h3>🛒 Kasir Pembelian Langsung</h3>
+      <div class="grid" id="gridMenu"></div>
       <table>
-        <thead><tr><th>Menu</th><th>Qty</th><th style="text-align:right;">Subtotal</th></tr></thead>
-        <tbody id="list"><tr><td colspan="3" style="text-align:center; color:#94a3b8; padding:14px 0;">Belum ada pesanan dipilih</td></tr></tbody>
+        <thead><tr><th>Menu</th><th>Qty</th><th>Subtotal</th></tr></thead>
+        <tbody id="tabelKasir"></tbody>
       </table>
-
-      <div class="total-row">
-        <span>Total Bayar</span>
-        <strong>Rp <span id="total">0</span></strong>
-      </div>
-
-      <input type="number" id="bayar" placeholder="Masukkan uang tunai siswa (Rp)" oninput="hitung()">
-      <div class="kembali-text">Kembalian: <span style="color:#16a34a;">Rp <span id="kembali">0</span></span></div>
-
-      <button class="btn-action btn-bayar" onclick="simpan()">✓ SELESAIKAN TRANSAKSI</button>
-      <button class="btn-action btn-reset" onclick="reset()">↺ Bersihkan Pesanan</button>
+      <div style="font-weight:bold; font-size:16px; margin-top:6px;">Total: Rp <span id="totalBayar">0</span></div>
+      <input type="number" id="uangSiswa" placeholder="Uang tunai pembeli (Rp)" oninput="hitungKembali()">
+      <div style="font-weight:bold; color:#16a34a;">Kembalian: Rp <span id="kembalian">0</span></div>
+      <button class="btn-full btn-green" onclick="bayarLangsung()">✓ SELESAIKAN & POTONG STOK</button>
+      <button class="btn-full btn-gray" onclick="resetKasir()">↺ Ulangi</button>
     </div>
 
-    <div class="card omzet-box">
-      <div>Omzet Kantin Hari Ini: <strong style="color:#16a34a;">Rp <span id="omzet">0</span></strong></div>
-      <button class="btn-clear-omzet" onclick="resetOmzet()">Reset</button>
+    <div class="card">
+      <strong>💰 Total Omzet Hari Ini: Rp <span id="omzet">0</span></strong>
     </div>
   </div>
 
-  <script>
-    let keranjang = [], omzet = Number(localStorage.getItem('omzet_kantin_rina')) || 0;
+  <!-- TAB 2: KELOLA STOK -->
+  <div id="tab2" class="hidden">
+    <div class="card">
+      <h3>📦 Atur & Restock Dagangan Kantin</h3>
+      <p style="font-size:12px; color:#64748b; margin-bottom:10px;">Jika stok 0, menu otomatis berstatus <b>Tak Tersedia</b> di halaman siswa.</p>
+      <div id="listStok"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const defaultMenu = [
+    { id: 1, nama: 'Nasi Goreng', harga: 10000, stok: 10 },
+    { id: 2, nama: 'Mie Ayam', harga: 10000, stok: 8 },
+    { id: 3, nama: 'Nasi Uduk', harga: 8000, stok: 5 },
+    { id: 4, nama: 'Gorengan (3bj)', harga: 3000, stok: 15 },
+    { id: 5, nama: 'Es Teh Manis', harga: 3000, stok: 20 },
+    { id: 6, nama: 'Air Mineral', harga: 3000, stok: 0 }
+  ];
+
+  let menuKantin = JSON.parse(localStorage.getItem('kantin_menu_data')) || defaultMenu;
+  let antrean = JSON.parse(localStorage.getItem('kantin_orders_data')) || [];
+  let omzet = Number(localStorage.getItem('kantin_omzet_data')) || 0;
+  let keranjang = [];
+
+  function simpanData() {
+    localStorage.setItem('kantin_menu_data', JSON.stringify(menuKantin));
+    localStorage.setItem('kantin_orders_data', JSON.stringify(antrean));
+    localStorage.setItem('kantin_omzet_data', omzet);
+  }
+
+  function bukaTab(no) {
+    document.getElementById('tab1').className = no === 1 ? '' : 'hidden';
+    document.getElementById('tab2').className = no === 2 ? '' : 'hidden';
+    document.getElementById('btnTab1').className = no === 1 ? 'tab-btn active' : 'tab-btn';
+    document.getElementById('btnTab2').className = no === 2 ? 'tab-btn active' : 'tab-btn';
+    renderSemua();
+  }
+
+  function renderSemua() {
     document.getElementById('omzet').innerText = omzet.toLocaleString('id-ID');
 
-    function tambah(nama, harga) {
-      let item = keranjang.find(x => x.nama === nama);
-      item ? item.qty++ : keranjang.push({ nama, harga, qty: 1 });
-      render();
+    document.getElementById('gridMenu').innerHTML = menuKantin.map(m => `
+      <button class="btn-menu" ${m.stok <= 0 ? 'disabled' : ''} onclick="tambahKeranjang(${m.id})">
+        <strong>${m.nama}</strong><br>
+        <small>Rp ${m.harga.toLocaleString('id-ID')}</small><br>
+        <span class="${m.stok > 0 ? 'ada' : 'habis'}">${m.stok > 0 ? 'Stok: ' + m.stok : 'Tak Tersedia'}</span>
+      </button>
+    `).join('');
+
+    const boxAntrean = document.getElementById('listAntrean');
+    boxAntrean.innerHTML = antrean.length ? antrean.map(a => `
+      <div class="order-box">
+        <div>
+          <strong>[${a.kode}] ${a.siswa}</strong><br>
+          <small>${a.item} (Rp ${a.harga.toLocaleString('id-ID')})</small><br>
+          <span style="font-size:11px; font-weight:bold; color:${a.status === 'Siap Diambil' ? '#16a34a' : '#d97706'};">Status: ${a.status}</span>
+        </div>
+        <div>
+          ${a.status === 'Dimasak' ? `<button class="btn-sm" style="background:#2563eb;" onclick="ubahSiap(${a.id})">Siap</button>` : ''}
+          <button class="btn-sm" style="background:#16a34a;" onclick="selesaiAntrean(${a.id})">Selesai</button>
+        </div>
+      </div>
+    `).join('') : '<small style="color:#64748b;">Belum ada pesanan dari siswa.</small>';
+
+    document.getElementById('listStok').innerHTML = menuKantin.map(m => `
+      <div class="stok-row">
+        <div>
+          <strong>${m.nama}</strong> <small>(Rp ${m.harga.toLocaleString('id-ID')})</small><br>
+          <span class="${m.stok > 0 ? 'ada' : 'habis'}">${m.stok > 0 ? 'Tersedia: ' + m.stok : 'Tak Tersedia (0)'}</span>
+        </div>
+        <div>
+          <button class="btn-sm" style="background:#dc2626;" onclick="ubahStok(${m.id}, -1)">-1</button>
+          <button class="btn-sm" style="background:#16a34a;" onclick="ubahStok(${m.id}, 5)">+5</button>
+          <button class="btn-sm" style="background:#64748b;" onclick="habiskanStok(${m.id})">Habis</button>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function ubahStok(id, jml) {
+    let m = menuKantin.find(x => x.id === id);
+    if (m) { m.stok = Math.max(0, m.stok + jml); simpanData(); renderSemua(); }
+  }
+
+  function habiskanStok(id) {
+    let m = menuKantin.find(x => x.id === id);
+    if (m) { m.stok = 0; simpanData(); renderSemua(); }
+  }
+
+  function ubahSiap(id) {
+    let a = antrean.find(x => x.id === id);
+    if (a) { a.status = 'Siap Diambil'; simpanData(); renderSemua(); }
+  }
+
+  function selesaiAntrean(id) {
+    let idx = antrean.findIndex(x => x.id === id);
+    if (idx > -1) {
+      omzet += antrean[idx].harga;
+      antrean.splice(idx, 1);
+      simpanData(); renderSemua();
+      alert('Pesanan selesai & omzet ditambahkan!');
     }
-    function kurang(nama) {
-      let idx = keranjang.findIndex(x => x.nama === nama);
-      if (idx > -1) {
-        keranjang[idx].qty > 1 ? keranjang[idx].qty-- : keranjang.splice(idx, 1);
-        render();
-      }
+  }
+
+  function tambahKeranjang(id) {
+    let m = menuKantin.find(x => x.id === id);
+    let ada = keranjang.find(k => k.id === id);
+    let qtyDiKeranjang = ada ? ada.qty : 0;
+    if (qtyDiKeranjang >= m.stok) return alert('Stok tidak mencukupi!');
+    ada ? ada.qty++ : keranjang.push({ id: m.id, nama: m.nama, harga: m.harga, qty: 1 });
+    renderKeranjang();
+  }
+
+  function renderKeranjang() {
+    let tot = 0;
+    document.getElementById('tabelKasir').innerHTML = keranjang.map(k => {
+      tot += k.harga * k.qty;
+      return `<tr><td>${k.nama}</td><td>${k.qty}</td><td>Rp ${(k.harga * k.qty).toLocaleString('id-ID')}</td></tr>`;
+    }).join('');
+    document.getElementById('totalBayar').innerText = tot.toLocaleString('id-ID');
+    hitungKembali();
+  }
+
+  function hitungKembali() {
+    let tot = keranjang.reduce((s, k) => s + k.harga * k.qty, 0);
+    let byr = Number(document.getElementById('uangSiswa').value) || 0;
+    document.getElementById('kembalian').innerText = byr >= tot ? (byr - tot).toLocaleString('id-ID') : 'Kurang';
+  }
+
+  function bayarLangsung() {
+    let tot = keranjang.reduce((s, k) => s + k.harga * k.qty, 0);
+    let byr = Number(document.getElementById('uangSiswa').value) || 0;
+    if (!tot || byr < tot) return alert('Cek daftar belanja atau uang tunai!');
+
+    keranjang.forEach(k => {
+      let m = menuKantin.find(x => x.id === k.id);
+
+  if (m) m.stok = Math.max(0, m.stok - k.qty);
+    });
+    omzet += tot;
+    simpanData();
+    alert('Transaksi Berhasil! Kembalian: Rp ' + (byr - tot).toLocaleString('id-ID'));
+    resetKasir(); renderSemua();
     }
-    function render() {
-      let tbody = document.getElementById('list');
-      if (!keranjang.length) {
-        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center; color:#94a3b8; padding:14px 0;">Belum ada pesanan dipilih</td></tr>';
-        document.getElementById('total').innerText = '0';
-        hitung(); return;
-      }
-      let html = '', tot = 0;
-      keranjang.forEach(x => {
-        tot += x.harga * x.qty;
-        html += `<tr>
-          <td>${x.nama}</td>
-          <td><button class="btn-min" onclick="kurang('${x.nama}')">-</button>${x.qty}</td>
-          <td style="text-align:right; font-weight:600;">Rp ${(x.harga*x.qty).toLocaleString('id-ID')}</td>
-        </tr>`;
-      });
-      tbody.innerHTML = html;
-      document.getElementById('total').innerText = tot.toLocaleString('id-ID');
-      hitung();
+  
+    function resetKasir() {
+    keranjang = [];
+    document.getElementById('uangSiswa').value = '';
+    renderKeranjang();
     }
-    function hitung() {
-      let tot = keranjang.reduce((a, b) => a + b.harga * b.qty, 0);
-      let byr = Number(document.getElementById('bayar').value) || 0;
-      document.getElementById('kembali').innerText = byr >= tot ? (byr - tot).toLocaleString('id-ID') : 'Uang Kurang';
-    }
-    function simpan() {
-      let tot = keranjang.reduce((a, b) => a + b.harga * b.qty, 0);
-      let byr = Number(document.getElementById('bayar').value) || 0;
-      if (!tot) return alert('Pilih menu kantin terlebih dahulu!');
-      if (byr < tot) return alert('Uang tunai siswa masih kurang!');
-      omzet += tot; localStorage.setItem('omzet_kantin_rina', omzet);
-      document.getElementById('omzet').innerText = omzet.toLocaleString('id-ID');
-      alert('Transaksi Berhasil!\nKembalian: Rp ' + (byr - tot).toLocaleString('id-ID'));
-      reset();
-    }
-    function reset() { keranjang = []; document.getElementById('bayar').value = ''; render(); }
-    function resetOmzet() {
-      if (confirm('Reset omzet hari ini menjadi Rp 0?')) {
-        omzet = 0; localStorage.setItem('omzet_kantin_rina', 0);
-        document.getElementById('omzet').innerText = '0';
-      }
-    }
-  </script>
-</body>
-</html>
+    simpanData();
+    renderSemua();
