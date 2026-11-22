@@ -18,9 +18,10 @@
     .btn-pilih:active { background: #dbeafe; border-color: #2563eb; }
     .btn-pilih:disabled { background: #fee2e2; border-color: #fca5a5; opacity: 0.7; cursor: not-allowed; }
     .keranjang-box { background: #eff6ff; border: 1px solid #bfdbfe; padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 13px; }
-    .keranjang-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px dashed #bfdbfe; }
-    .btn-kurang { background: #dc2626; color: white; border: none; border-radius: 4px; padding: 2px 7px; font-weight: bold; cursor: pointer; margin-left: 6px; }
-    .btn-pesan { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; }
+    .keranjang-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px dashed #bfdbfe; }
+    .btn-kurang { background: #dc2626; color: white; border: none; border-radius: 4px; padding: 3px 8px; font-weight: bold; cursor: pointer; margin-left: 6px; }
+    .btn-pesan { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; margin-bottom: 6px; }
+    .btn-batal { width: 100%; padding: 10px; background: #e2e8f0; color: #334155; border: none; border-radius: 8px; font-weight: bold; font-size: 13px; cursor: pointer; }
     .item-antrean { padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 8px; background: #f8fafc; display: flex; justify-content: space-between; align-items: center; }
     .badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; }
     .dimasak { background: #fef3c7; color: #b45309; }
@@ -38,18 +39,19 @@
     <h3>✍️ Pilih Menu & Form Pemesanan Siswa</h3>
     <input type="text" id="namaSiswa" placeholder="Nama & Kelas (Contoh: Ikhsan - XII RPL 1)">
 
-    <p style="font-size:12px; color:#64748b; margin-bottom:6px;">Klik menu di bawah ini (bisa pilih lebih dari satu):</p>
+    <p style="font-size:12px; color:#64748b; margin-bottom:6px;">Klik menu langsung (bisa klik berkali-kali untuk tambah jumlah):</p>
     <div class="grid-menu" id="gridMenuSiswa"></div>
 
     <div class="keranjang-box">
-      <strong>🛒 Daftar Pesanan Anda:</strong>
+      <strong>🛒 Daftar Pesanan Sementara:</strong>
       <div id="listKeranjangSiswa" style="margin:6px 0; color:#475569;">Belum ada menu dipilih.</div>
       <div style="font-weight:bold; font-size:14px; color:#1d4ed8; margin-top:6px;">
         Total Bayar: Rp <span id="totalPesananSiswa">0</span>
       </div>
     </div>
 
-    <button type="button" class="btn-pesan" onclick="kirimPesanan()">+ KIRIM PESANAN & AMBIL ANTREAN</button>
+    <button type="button" class="btn-pesan" onclick="kirimPesanan()">✓ PESAN SEKARANG & AMBIL ANTREAN</button>
+    <button type="button" class="btn-batal" onclick="batalPesanan()">✕ Batalkan / Ganti Menu</button>
   </div>
 
   <div class="card">
@@ -78,7 +80,6 @@
     menuKantin = JSON.parse(localStorage.getItem('kantin_menu_data')) || defaultMenu;
     antrean = JSON.parse(localStorage.getItem('kantin_orders_data')) || [];
 
-    // Tombol pilih menu (bisa multi-item)
     document.getElementById('gridMenuSiswa').innerHTML = menuKantin.map(m => {
       let diKeranjang = keranjangSiswa.find(k => k.id === m.id);
       let sisaStok = m.stok - (diKeranjang ? diKeranjang.qty : 0);
@@ -93,7 +94,6 @@
       `;
     }).join('');
 
-    // Render keranjang siswa
     const boxKeranjang = document.getElementById('listKeranjangSiswa');
     let total = 0;
     if (keranjangSiswa.length === 0) {
@@ -111,7 +111,6 @@
     }
     document.getElementById('totalPesananSiswa').innerText = total.toLocaleString('id-ID');
 
-    // Render monitor antrean (hanya lihat)
     document.getElementById('monitorAntrean').innerHTML = antrean.length
       ? antrean.map(a => `
         <div class="item-antrean">
@@ -142,6 +141,11 @@
       keranjangSiswa[idx].qty > 1 ? keranjangSiswa[idx].qty-- : keranjangSiswa.splice(idx, 1);
       renderHalaman();
     }
+  }
+
+  function batalPesanan() {
+    keranjangSiswa = [];
+    renderHalaman();
   }
 
   function kirimPesanan() {
