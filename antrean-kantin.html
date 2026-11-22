@@ -5,62 +5,83 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Antrean Kantin Digital</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 12px; background: #eef2f5; }
-    h2 { text-align: center; background: #0d6efd; color: white; padding: 10px; border-radius: 6px; margin: 0 0 12px; }
-    .card { background: white; padding: 12px; border-radius: 6px; margin-bottom: 12px; border: 1px solid #ddd; }
-    input, select, button { width: 100%; padding: 10px; margin: 6px 0; font-size: 14px; border-radius: 4px; box-sizing: border-box; }
-    .btn-pesan { background: #0d6efd; color: white; font-weight: bold; border: none; cursor: pointer; }
-    .item { border: 1px solid #ccc; padding: 10px; border-radius: 5px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-    .badge { padding: 3px 7px; border-radius: 4px; font-size: 12px; color: white; font-weight: bold; }
-    .dimasak { background: #fd7e14; } .siap { background: #198754; }
-    .btn-kecil { width: auto; padding: 6px 10px; margin: 0 2px; font-size: 12px; color: white; border: none; cursor: pointer; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f1f5f9; color: #1e293b; padding: 14px; }
+    .wrapper { max-width: 480px; margin: 0 auto; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white; padding: 14px 16px; border-radius: 12px; margin-bottom: 14px; box-shadow: 0 4px 10px rgba(37,99,235,0.2); }
+    .topbar h2 { font-size: 17px; }
+    .btn-back { background: rgba(255,255,255,0.2); color: white; text-decoration: none; padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; }
+    .card { background: white; padding: 16px; border-radius: 12px; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; }
+    .card-title { font-size: 14px; font-weight: 700; color: #475569; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+    input, select { width: 100%; padding: 11px 12px; margin-bottom: 10px; font-size: 14px; border: 1px solid #cbd5e1; border-radius: 8px; background: #f8fafc; }
+    input:focus, select:focus { outline: none; border-color: #2563eb; background: white; }
+    .btn-pesan { width: 100%; padding: 13px; background: #2563eb; color: white; font-weight: 700; font-size: 15px; border: none; border-radius: 8px; cursor: pointer; }
+    .antrean-card { border: 1px solid #e2e8f0; background: #f8fafc; padding: 12px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+    .kode-antrean { display: inline-block; background: #1e293b; color: white; font-weight: 700; font-size: 13px; padding: 2px 8px; border-radius: 6px; margin-right: 6px; }
+    .badge { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; margin-top: 6px; }
+    .dimasak { background: #ffedd5; color: #c2410c; }
+    .siap { background: #dcfce7; color: #15803d; }
+    .btn-aksi { padding: 7px 11px; font-size: 12px; font-weight: 600; color: white; border: none; border-radius: 6px; cursor: pointer; margin-left: 4px; }
+    .btn-siap { background: #16a34a; }
+    .btn-selesai { background: #64748b; }
   </style>
 </head>
 <body>
-  <h2>ANTREAN KANTIN DIGITAL</h2>
-  <div class="card">
-    <strong>1. Pesan Makanan (Siswa)</strong>
-    <input type="text" id="nama" placeholder="Nama & Kelas (Contoh: Andi - XII RPL)">
-    <select id="menu">
-      <option>Nasi Goreng (Rp 12.000)</option>
-      <option>Mie Ayam Bakso (Rp 10.000)</option>
-      <option>Soto Ayam (Rp 10.000)</option>
-      <option>Es Teh Manis (Rp 3.000)</option>
-    </select>
-    <button class="btn-pesan" onclick="pesan()">AMBIL NOMOR ANTREAN</button>
-  </div>
-  <div class="card">
-    <strong>2. Monitor Antrean & Kontrol Penjual</strong>
-    <div id="antrean" style="margin-top:8px;"></div>
+  <div class="wrapper">
+    <div class="topbar">
+      <h2>🍱 Antrean Kantin Sekolah</h2>
+      <a href="index.html" class="btn-back">← Menu</a>
+    </div>
+
+    <div class="card">
+      <div class="card-title">1. Form Pre-Order Siswa</div>
+      <input type="text" id="nama" placeholder="Nama & Kelas (Contoh: Ikhsan - XII RPL 1)">
+      <select id="menu">
+        <option>🍛 Nasi Goreng Kantin (Rp 10.000)</option>
+        <option>🍜 Mie Ayam Bakso (Rp 10.000)</option>
+        <option>🍚 Nasi Uduk Ayam (Rp 8.000)</option>
+        <option>🥟 Paket Gorengan + Es Teh (Rp 6.000)</option>
+      </select>
+      <button class="btn-pesan" onclick="pesan()">+ AMBIL NOMOR ANTREAN</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">2. Monitor Antrean & Panel Penjual</div>
+      <div id="antrean"></div>
+    </div>
   </div>
 
   <script>
-    let daftar = JSON.parse(localStorage.getItem('kantin_list')) || [];
-    let no = Number(localStorage.getItem('kantin_no')) || 1;
+    let daftar = JSON.parse(localStorage.getItem('kantin_list_v2')) || [];
+    let no = Number(localStorage.getItem('kantin_no_v2')) || 1;
 
     function pesan() {
       let nama = document.getElementById('nama').value.trim();
       let menu = document.getElementById('menu').value;
       if (!nama) return alert('Isi nama dan kelas terlebih dahulu!');
       let kode = 'A-' + String(no++).padStart(2, '0');
-      daftar.push({ id: Date.now(), kode, nama, menu, status: 'Dimasak' });
+      daftar.push({ id: Date.now(), kode, nama, menu, status: 'Sedang Dimasak' });
       document.getElementById('nama').value = '';
-      update(); alert('Nomor Antrean Anda: ' + kode);
+      update(); alert('Pesanan Diterima!\nNomor Antrean Anda: ' + kode);
     }
     function siap(id) { let x = daftar.find(i => i.id === id); if (x) x.status = 'Siap Diambil'; update(); }
     function hapus(id) { daftar = daftar.filter(i => i.id !== id); update(); }
     function update() {
-      localStorage.setItem('kantin_list', JSON.stringify(daftar));
-      localStorage.setItem('kantin_no', no);
-      document.getElementById('antrean').innerHTML = daftar.length ? daftar.map(x => `
-        <div class="item">
-          <div><strong>[${x.kode}] ${x.nama}</strong><br><small>${x.menu}</small><br>
-          <span class="badge ${x.status === 'Dimasak' ? 'dimasak' : 'siap'}">${x.status}</span></div>
+      localStorage.setItem('kantin_list_v2', JSON.stringify(daftar));
+      localStorage.setItem('kantin_no_v2', no);
+      let el = document.getElementById('antrean');
+      el.innerHTML = daftar.length ? daftar.map(x => `
+        <div class="antrean-card">
           <div>
-            ${x.status === 'Dimasak' ? `<button class="btn-kecil" style="background:#198754" onclick="siap(${x.id})">Siap</button>` : ''}
-            <button class="btn-kecil" style="background:#dc3545" onclick="hapus(${x.id})">Selesai</button>
+            <div><span class="kode-antrean">${x.kode}</span><strong>${x.nama}</strong></div>
+            <div style="font-size:13px; color:#475569; margin-top:3px;">${x.menu}</div>
+            <span class="badge ${x.status === 'Sedang Dimasak' ? 'dimasak' : 'siap'}">${x.status}</span>
           </div>
-        </div>`).join('') : '<small style="color:#666">Belum ada antrean.</small>';
+          <div style="display:flex;">
+            ${x.status === 'Sedang Dimasak' ? `<button class="btn-aksi btn-siap" onclick="siap(${x.id})">Siap</button>` : ''}
+            <button class="btn-aksi btn-selesai" onclick="hapus(${x.id})">Ambil</button>
+          </div>
+        </div>`).join('') : '<p style="text-align:center; color:#94a3b8; font-size:13px; padding:12px 0;">Belum ada antrean pesanan.</p>';
     }
     update();
   </script>
