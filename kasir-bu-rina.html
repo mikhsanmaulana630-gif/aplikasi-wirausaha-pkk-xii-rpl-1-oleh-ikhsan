@@ -53,23 +53,36 @@
     <a href="index.html">← Menu</a>
   </div>
 
-  <div class="tabs">
-    <button class="tab-btn active" id="btnTab1" onclick="bukaTab(1)">1. Melayani & Pesanan</button>
-    <button class="tab-btn" id="btnTab2" onclick="bukaTab(2)">2. Kelola Stok Barang</button>
+    <div class="tabs">
+    <button type="button" class="tab-btn active" id="btnTab1" onclick="bukaTab(1)">Melayani & Pesanan</button>
+    <button type="button" class="tab-btn" id="btnTab2" onclick="bukaTab(2)">Kelola Stok Barang</button>
   </div>
 
   <!-- TAB 1: MELAYANI -->
   <div id="tab1">
-    <div class="grid-layout">
-      <div>
-        <div class="card">
-          <h3>📩 Pesanan Masuk dari Siswa (Antrean)</h3>
-          <div id="listAntrean"></div>
-        </div>
-        <div class="card" style="background:#ecfdf5; border:1px solid #a7f3d0;">
-          <strong style="font-size:17px; color:#065f46;">💰 Total Omzet Hari Ini: Rp <span id="omzet">0</span></strong>
-        </div>
-      </div>
+    <div class="card">
+      <h3>🛒 Kasir Pembelian Langsung</h3>
+      <div class="grid" id="gridMenu"></div>
+      <table>
+        <thead><tr><th>Menu</th><th>Qty</th><th>Subtotal</th></tr></thead>
+        <tbody id="tabelKasir"></tbody>
+      </table>
+      <div style="font-weight:bold; font-size:18px; margin-top:8px;">Total: Rp <span id="totalBayar">0</span></div>
+      <input type="number" id="uangSiswa" placeholder="Uang tunai pembeli (Rp)" oninput="hitungKembali()">
+      <div style="font-weight:bold; font-size:16px; color:#16a34a;">Kembalian: Rp <span id="kembalian">0</span></div>
+      <button type="button" class="btn-full btn-green" onclick="bayarLangsung()">✓ KONFIRMASI</button>
+      <button type="button" class="btn-full btn-gray" onclick="resetKasir()">↺ Ulangi</button>
+    </div>
+
+    <div class="card">
+      <h3>📩 Pesanan Masuk dari Siswa (Antrean)</h3>
+      <div id="listAntrean"></div>
+    </div>
+
+    <div class="card" style="background:#ecfdf5; border:1px solid #a7f3d0;">
+      <strong style="font-size:17px; color:#065f46;">💰 Total Omzet Hari Ini: Rp <span id="omzet">0</span></strong>
+    </div>
+  </div>
 
     <div class="card">
       <h3>🛒 Kasir Pembelian Langsung</h3>
