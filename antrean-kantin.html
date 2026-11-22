@@ -6,35 +6,49 @@
   <title>Pesan & Antrean Kantin (Siswa)</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Arial, sans-serif; background: #f1f5f9; color: #1e293b; padding: 12px; }
-    .wrap { max-width: 500px; margin: 0 auto; }
-    .header { display: flex; justify-content: space-between; align-items: center; background: #2563eb; color: white; padding: 12px 15px; border-radius: 10px; margin-bottom: 12px; }
-    .header a { color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 6px; font-size: 13px; }
-    .card { background: white; padding: 14px; border-radius: 10px; margin-bottom: 12px; border: 1px solid #e2e8f0; }
-    h3 { font-size: 15px; margin-bottom: 10px; color: #0f172a; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px; }
-    input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
-    .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-    .btn-pilih { padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; background: #f8fafc; text-align: left; cursor: pointer; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 55%, #2563eb 100%);
+      min-height: 100vh;
+      color: #1e293b;
+      padding: clamp(12px, 3vw, 28px);
+    }
+    .wrap { max-width: 960px; width: 100%; margin: 0 auto; }
+    .header {
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(255, 255, 255, 0.14); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: white; padding: 16px 20px; border-radius: 16px; margin-bottom: 16px;
+    }
+    .header strong { font-size: clamp(18px, 2.5vw, 22px); }
+    .header a { color: white; text-decoration: none; background: rgba(0, 0, 0, 0.25); padding: 8px 14px; border-radius: 10px; font-size: 14px; font-weight: bold; }
+    .grid-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; align-items: start; }
+    .card { background: #ffffff; padding: 18px; border-radius: 16px; margin-bottom: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+    h3 { font-size: 16px; margin-bottom: 12px; color: #1e3a8a; border-bottom: 2px solid #eff6ff; padding-bottom: 8px; }
+    input { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 15px; }
+    .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+    .btn-pilih { padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; background: #f8fafc; text-align: left; cursor: pointer; font-size: 14px; }
     .btn-pilih:active { background: #dbeafe; border-color: #2563eb; }
     .btn-pilih:disabled { background: #fee2e2; border-color: #fca5a5; opacity: 0.7; cursor: not-allowed; }
-    .keranjang-box { background: #eff6ff; border: 1px solid #bfdbfe; padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 13px; }
-    .keranjang-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px dashed #bfdbfe; }
-    .btn-kurang { background: #dc2626; color: white; border: none; border-radius: 4px; padding: 3px 8px; font-weight: bold; cursor: pointer; margin-left: 6px; }
-    .btn-pesan { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; margin-bottom: 6px; }
-    .btn-batal { width: 100%; padding: 10px; background: #e2e8f0; color: #334155; border: none; border-radius: 8px; font-weight: bold; font-size: 13px; cursor: pointer; }
-    .item-antrean { padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 8px; background: #f8fafc; display: flex; justify-content: space-between; align-items: center; }
-    .badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; }
+    .keranjang-box { background: #eff6ff; border: 1px solid #bfdbfe; padding: 12px; border-radius: 10px; margin-bottom: 12px; font-size: 14px; }
+    .keranjang-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px dashed #bfdbfe; }
+    .btn-kurang { background: #dc2626; color: white; border: none; border-radius: 6px; padding: 4px 9px; font-weight: bold; cursor: pointer; margin-left: 6px; }
+    .btn-pesan { width: 100%; padding: 14px; background: #2563eb; color: white; border: none; border-radius: 10px; font-weight: bold; font-size: 15px; cursor: pointer; margin-bottom: 8px; }
+    .btn-batal { width: 100%; padding: 11px; background: #e2e8f0; color: #334155; border: none; border-radius: 10px; font-weight: bold; font-size: 14px; cursor: pointer; }
+    .item-antrean { padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; margin-bottom: 10px; background: #f8fafc; display: flex; justify-content: space-between; align-items: center; }
+    .badge { padding: 5px 10px; border-radius: 8px; font-size: 12px; font-weight: bold; }
     .dimasak { background: #fef3c7; color: #b45309; }
     .siap { background: #dcfce7; color: #15803d; }
   </style>
 </head>
+  
 <body>
 <div class="wrap">
   <div class="header">
     <strong>🍱 Pesan & Antrean Kantin</strong>
     <a href="index.html">← Menu</a>
   </div>
-
+<div class="grid-layout">
   <div class="card">
     <h3>✍️ Pilih Menu & Form Pemesanan Siswa</h3>
     <input type="text" id="namaSiswa" placeholder="Nama & Kelas (Contoh: Ikhsan - XII RPL 1)">
@@ -59,6 +73,7 @@
     <p style="font-size:12px; color:#64748b; margin-bottom:8px;">Status pesanan hanya dapat diubah oleh Bu Rina di aplikasi kasir.</p>
     <div id="monitorAntrean"></div>
   </div>
+</div>
 </div>
 
 <script>
