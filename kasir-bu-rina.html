@@ -6,29 +6,43 @@
   <title>Kasir Kantin Bu Rina</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Arial, sans-serif; background: #f1f5f9; color: #1e293b; padding: 12px; }
-    .wrap { max-width: 500px; margin: 0 auto; }
-    .header { display: flex; justify-content: space-between; align-items: center; background: #16a34a; color: white; padding: 12px 15px; border-radius: 10px; margin-bottom: 12px; }
-    .header a { color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 6px; font-size: 13px; }
-    .tabs { display: flex; gap: 8px; margin-bottom: 12px; }
-    .tab-btn { flex: 1; padding: 11px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; background: #cbd5e1; color: #334155; }
-    .tab-btn.active { background: #15803d; color: white; }
-    .card { background: white; padding: 14px; border-radius: 10px; margin-bottom: 12px; border: 1px solid #e2e8f0; }
-    h3 { font-size: 15px; margin-bottom: 10px; color: #0f172a; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .btn-menu { padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; background: #f8fafc; text-align: left; cursor: pointer; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #064e3b 0%, #047857 50%, #15803d 100%);
+      min-height: 100vh;
+      color: #1e293b;
+      padding: clamp(12px, 3vw, 28px);
+    }
+    .wrap { max-width: 960px; width: 100%; margin: 0 auto; }
+    .header {
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(255, 255, 255, 0.14); backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: white; padding: 16px 20px; border-radius: 16px; margin-bottom: 16px;
+    }
+    .header strong { font-size: clamp(18px, 2.5vw, 22px); }
+    .header a { color: white; text-decoration: none; background: rgba(0, 0, 0, 0.25); padding: 8px 14px; border-radius: 10px; font-size: 14px; font-weight: bold; }
+    .tabs { display: flex; gap: 10px; margin-bottom: 16px; }
+    .tab-btn { flex: 1; padding: 14px; border: none; border-radius: 12px; font-size: 15px; font-weight: bold; cursor: pointer; background: rgba(255, 255, 255, 0.2); color: white; }
+    .tab-btn.active { background: #ffffff; color: #065f46; box-shadow: 0 6px 15px rgba(0,0,0,0.15); }
+    .grid-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; align-items: start; }
+    .card { background: #ffffff; padding: 18px; border-radius: 16px; margin-bottom: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+    h3 { font-size: 16px; margin-bottom: 12px; color: #064e3b; border-bottom: 2px solid #ecfdf5; padding-bottom: 8px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .btn-menu { padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; background: #f8fafc; text-align: left; cursor: pointer; font-size: 14px; }
+    .btn-menu:active { background: #dcfce7; border-color: #16a34a; }
     .btn-menu:disabled { background: #fee2e2; border-color: #fca5a5; opacity: 0.75; cursor: not-allowed; }
-    .habis { color: #dc2626; font-size: 11px; font-weight: bold; }
-    .ada { color: #16a34a; font-size: 11px; font-weight: bold; }
-    table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 14px; }
-    td, th { padding: 6px 4px; border-bottom: 1px solid #f1f5f9; text-align: left; }
-    input[type=number] { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; margin: 8px 0; font-size: 15px; }
-    .btn-full { width: 100%; padding: 11px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 6px; }
+    .habis { color: #dc2626; font-size: 12px; font-weight: bold; }
+    .ada { color: #16a34a; font-size: 12px; font-weight: bold; }
+    table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 14px; }
+    td, th { padding: 8px 4px; border-bottom: 1px solid #f1f5f9; text-align: left; }
+    input[type=number] { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; margin: 10px 0; font-size: 16px; }
+    .btn-full { width: 100%; padding: 13px; border: none; border-radius: 10px; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 8px; }
     .btn-green { background: #16a34a; color: white; }
     .btn-gray { background: #e2e8f0; color: #334155; }
-    .order-box { border: 1px solid #cbd5e1; padding: 10px; border-radius: 8px; margin-bottom: 8px; background: #f8fafc; display: flex; justify-content: space-between; align-items: center; }
-    .btn-sm { padding: 6px 10px; border: none; border-radius: 6px; color: white; font-size: 12px; font-weight: bold; cursor: pointer; margin-left: 4px; }
-    .stok-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #f1f5f9; }
+    .order-box { border: 1px solid #cbd5e1; padding: 12px; border-radius: 10px; margin-bottom: 10px; background: #f8fafc; display: flex; justify-content: space-between; align-items: center; }
+    .btn-sm { padding: 8px 12px; border: none; border-radius: 8px; color: white; font-size: 13px; font-weight: bold; cursor: pointer; margin-left: 4px; }
+    .stok-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 15px; }
     .hidden { display: none; }
   </style>
 </head>
@@ -46,10 +60,16 @@
 
   <!-- TAB 1: MELAYANI -->
   <div id="tab1">
-    <div class="card">
-      <h3>📩 Pesanan Masuk dari Siswa (Antrean)</h3>
-      <div id="listAntrean"></div>
-    </div>
+    <div class="grid-layout">
+      <div>
+        <div class="card">
+          <h3>📩 Pesanan Masuk dari Siswa (Antrean)</h3>
+          <div id="listAntrean"></div>
+        </div>
+        <div class="card" style="background:#ecfdf5; border:1px solid #a7f3d0;">
+          <strong style="font-size:17px; color:#065f46;">💰 Total Omzet Hari Ini: Rp <span id="omzet">0</span></strong>
+        </div>
+      </div>
 
     <div class="card">
       <h3>🛒 Kasir Pembelian Langsung</h3>
@@ -63,10 +83,7 @@
       <div style="font-weight:bold; color:#16a34a;">Kembalian: Rp <span id="kembalian">0</span></div>
       <button class="btn-full btn-green" onclick="bayarLangsung()">✓ SELESAIKAN & POTONG STOK</button>
       <button class="btn-full btn-gray" onclick="resetKasir()">↺ Ulangi</button>
-    </div>
-
-    <div class="card">
-      <strong>💰 Total Omzet Hari Ini: Rp <span id="omzet">0</span></strong>
+      
     </div>
   </div>
 
