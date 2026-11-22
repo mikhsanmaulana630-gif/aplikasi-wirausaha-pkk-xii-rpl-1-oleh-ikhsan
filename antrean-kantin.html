@@ -12,17 +12,21 @@
     .header a { color: white; text-decoration: none; background: rgba(255,255,255,0.2); padding: 5px 10px; border-radius: 6px; font-size: 13px; }
     .card { background: white; padding: 14px; border-radius: 10px; margin-bottom: 12px; border: 1px solid #e2e8f0; }
     h3 { font-size: 15px; margin-bottom: 10px; color: #0f172a; border-bottom: 1px solid #f1f5f9; padding-bottom: 6px; }
-    input, select { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
+    input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 14px; }
+    .grid-menu { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+    .btn-pilih { padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; background: #f8fafc; text-align: left; cursor: pointer; }
+    .btn-pilih:active { background: #dbeafe; border-color: #2563eb; }
+    .btn-pilih:disabled { background: #fee2e2; border-color: #fca5a5; opacity: 0.7; cursor: not-allowed; }
+    .keranjang-box { background: #eff6ff; border: 1px solid #bfdbfe; padding: 10px; border-radius: 8px; margin-bottom: 10px; font-size: 13px; }
+    .keranjang-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px dashed #bfdbfe; }
+    .btn-kurang { background: #dc2626; color: white; border: none; border-radius: 4px; padding: 2px 7px; font-weight: bold; cursor: pointer; margin-left: 6px; }
     .btn-pesan { width: 100%; padding: 12px; background: #2563eb; color: white; border: none; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; }
-    .stok-list { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 4px; font-size: 12px; }
-    .stok-item { padding: 8px; border-radius: 6px; border: 1px solid #e2e8f0; background: #f8fafc; }
     .item-antrean { padding: 10px; border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 8px; background: #f8fafc; display: flex; justify-content: space-between; align-items: center; }
     .badge { padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; }
     .dimasak { background: #fef3c7; color: #b45309; }
     .siap { background: #dcfce7; color: #15803d; }
   </style>
 </head>
-  
 <body>
 <div class="wrap">
   <div class="header">
@@ -31,15 +35,21 @@
   </div>
 
   <div class="card">
-    <h3>📋 Cek Ketersediaan Menu Hari Ini</h3>
-    <div class="stok-list" id="infoStok"></div>
-  </div>
-
-  <div class="card">
-    <h3>✍️ Form Pemesanan Siswa</h3>
+    <h3>✍️ Pilih Menu & Form Pemesanan Siswa</h3>
     <input type="text" id="namaSiswa" placeholder="Nama & Kelas (Contoh: Ikhsan - XII RPL 1)">
-    <select id="pilihMenu"></select>
-    <button type="button" class="btn-pesan" onclick="kirimPesanan()">+ PESAN & AMBIL ANTREAN</button>
+
+    <p style="font-size:12px; color:#64748b; margin-bottom:6px;">Klik menu di bawah ini (bisa pilih lebih dari satu):</p>
+    <div class="grid-menu" id="gridMenuSiswa"></div>
+
+    <div class="keranjang-box">
+      <strong>🛒 Daftar Pesanan Anda:</strong>
+      <div id="listKeranjangSiswa" style="margin:6px 0; color:#475569;">Belum ada menu dipilih.</div>
+      <div style="font-weight:bold; font-size:14px; color:#1d4ed8; margin-top:6px;">
+        Total Bayar: Rp <span id="totalPesananSiswa">0</span>
+      </div>
+    </div>
+
+    <button type="button" class="btn-pesan" onclick="kirimPesanan()">+ KIRIM PESANAN & AMBIL ANTREAN</button>
   </div>
 
   <div class="card">
@@ -62,31 +72,53 @@
   let menuKantin = JSON.parse(localStorage.getItem('kantin_menu_data')) || defaultMenu;
   let antrean = JSON.parse(localStorage.getItem('kantin_orders_data')) || [];
   let noUrut = Number(localStorage.getItem('kantin_no_urut')) || 1;
+  let keranjangSiswa = [];
 
   function renderHalaman() {
     menuKantin = JSON.parse(localStorage.getItem('kantin_menu_data')) || defaultMenu;
     antrean = JSON.parse(localStorage.getItem('kantin_orders_data')) || [];
 
-    document.getElementById('infoStok').innerHTML = menuKantin.map(m => `
-      <div class="stok-item">
-        <strong>${m.nama}</strong><br>
-        <span style="color:${m.stok > 0 ? '#16a34a' : '#dc2626'}; font-weight:bold;">
-          ${m.stok > 0 ? 'Tersedia (' + m.stok + ')' : 'Tak Tersedia'}
-        </span>
-      </div>
-    `).join('');
+    // Tombol pilih menu (bisa multi-item)
+    document.getElementById('gridMenuSiswa').innerHTML = menuKantin.map(m => {
+      let diKeranjang = keranjangSiswa.find(k => k.id === m.id);
+      let sisaStok = m.stok - (diKeranjang ? diKeranjang.qty : 0);
+      return `
+        <button type="button" class="btn-pilih" ${sisaStok <= 0 ? 'disabled' : ''} onclick="tambahMenuSiswa(${m.id})">
+          <strong>${m.nama}</strong><br>
+          <small>Rp ${m.harga.toLocaleString('id-ID')}</small><br>
+          <span style="font-size:11px; font-weight:bold; color:${sisaStok > 0 ? '#16a34a' : '#dc2626'};">
+            ${sisaStok > 0 ? 'Tersedia (' + sisaStok + ')' : 'Tak Tersedia'}
+          </span>
+        </button>
+      `;
+    }).join('');
 
-    let tersedia = menuKantin.filter(m => m.stok > 0);
-    document.getElementById('pilihMenu').innerHTML = tersedia.length
-      ? tersedia.map(m => `<option value="${m.id}">${m.nama} - Rp ${m.harga.toLocaleString('id-ID')}</option>`).join('')
-      : '<option value="">Semua menu sedang tak tersedia</option>';
+    // Render keranjang siswa
+    const boxKeranjang = document.getElementById('listKeranjangSiswa');
+    let total = 0;
+    if (keranjangSiswa.length === 0) {
+      boxKeranjang.innerHTML = 'Belum ada menu dipilih.';
+    } else {
+      boxKeranjang.innerHTML = keranjangSiswa.map(k => {
+        total += k.harga * k.qty;
+        return `
+          <div class="keranjang-row">
+            <span>${k.nama} <b>x${k.qty}</b></span>
+            <span>Rp ${(k.harga * k.qty).toLocaleString('id-ID')} <button type="button" class="btn-kurang" onclick="kurangMenuSiswa(${k.id})">-</button></span>
+          </div>
+        `;
+      }).join('');
+    }
+    document.getElementById('totalPesananSiswa').innerText = total.toLocaleString('id-ID');
 
+    // Render monitor antrean (hanya lihat)
     document.getElementById('monitorAntrean').innerHTML = antrean.length
       ? antrean.map(a => `
         <div class="item-antrean">
           <div>
             <strong>[${a.kode}] ${a.siswa}</strong><br>
-            <small>${a.item}</small>
+            <small>${a.item}</small><br>
+            <small style="color:#2563eb; font-weight:bold;">Total: Rp ${a.harga.toLocaleString('id-ID')}</small>
           </div>
           <span class="badge ${a.status === 'Siap Diambil' ? 'siap' : 'dimasak'}">${a.status}</span>
         </div>
@@ -94,30 +126,60 @@
       : '<small style="color:#64748b;">Belum ada antrean aktif.</small>';
   }
 
+  function tambahMenuSiswa(id) {
+    let m = menuKantin.find(x => x.id === id);
+    let ada = keranjangSiswa.find(k => k.id === id);
+    let qtySaatIni = ada ? ada.qty : 0;
+    if (!m || qtySaatIni >= m.stok) return alert('Stok tidak mencukupi!');
+
+    ada ? ada.qty++ : keranjangSiswa.push({ id: m.id, nama: m.nama, harga: m.harga, qty: 1 });
+    renderHalaman();
+  }
+
+  function kurangMenuSiswa(id) {
+    let idx = keranjangSiswa.findIndex(k => k.id === id);
+    if (idx > -1) {
+      keranjangSiswa[idx].qty > 1 ? keranjangSiswa[idx].qty-- : keranjangSiswa.splice(idx, 1);
+      renderHalaman();
+    }
+  }
+
   function kirimPesanan() {
     let siswa = document.getElementById('namaSiswa').value.trim();
-    let menuId = Number(document.getElementById('pilihMenu').value);
     if (!siswa) return alert('Isi nama dan kelas terlebih dahulu!');
-    if (!menuId) return alert('Menu sedang tak tersedia!');
+    if (keranjangSiswa.length === 0) return alert('Pilih minimal satu makanan atau minuman!');
 
-    let m = menuKantin.find(x => x.id === menuId);
-    if (!m || m.stok <= 0) return alert('Maaf, stok baru saja habis!');
+    let ringkasanItem = [];
+    let totalHarga = 0;
 
-    m.stok -= 1;
+    keranjangSiswa.forEach(k => {
+      let m = menuKantin.find(x => x.id === k.id);
+      if (m) m.stok = Math.max(0, m.stok - k.qty);
+      ringkasanItem.push(`${k.nama} (${k.qty})`);
+      totalHarga += k.harga * k.qty;
+    });
+
     let kode = 'A-' + String(noUrut++).padStart(2, '0');
-    antrean.push({ id: Date.now(), kode, siswa, item: m.nama, harga: m.harga, status: 'Dimasak' });
+    antrean.push({
+      id: Date.now(),
+      kode: kode,
+      siswa: siswa,
+      item: ringkasanItem.join(', '),
+      harga: totalHarga,
+      status: 'Dimasak'
+    });
 
     localStorage.setItem('kantin_menu_data', JSON.stringify(menuKantin));
     localStorage.setItem('kantin_orders_data', JSON.stringify(antrean));
     localStorage.setItem('kantin_no_urut', noUrut);
 
+    keranjangSiswa = [];
     document.getElementById('namaSiswa').value = '';
     renderHalaman();
-    alert('Pesanan terkirim ke Bu Rina!\nNomor Antrean Anda: ' + kode);
+    alert('Pesanan terkirim ke Bu Rina!\nNomor Antrean Anda: ' + kode + '\nTotal: Rp ' + totalHarga.toLocaleString('id-ID'));
   }
 
   renderHalaman();
 </script>
 </body>
 </html>
-
