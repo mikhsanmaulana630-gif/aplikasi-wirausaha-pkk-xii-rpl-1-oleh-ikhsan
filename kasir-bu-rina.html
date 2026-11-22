@@ -15,10 +15,20 @@
     }
     .wrap { max-width: 960px; width: 100%; margin: 0 auto; }
     .header {
-      display: flex; justify-content: space-between; align-items: center;
-      background: rgba(255, 255, 255, 0.14); backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      color: white; padding: 16px 20px; border-radius: 16px; margin-bottom: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 16px clamp(16px, 4vw, 32px);
+      margin-bottom: 18px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
     .header strong { font-size: clamp(18px, 2.5vw, 22px); }
     .header a { color: white; text-decoration: none; background: rgba(0, 0, 0, 0.25); padding: 8px 14px; border-radius: 10px; font-size: 14px; font-weight: bold; }
@@ -46,13 +56,14 @@
     .hidden { display: none; }
   </style>
 </head>
+  
 <body>
-<div class="wrap">
   <div class="header">
     <strong>🧾 Kasir & Dapur Bu Rina</strong>
     <a href="index.html">← Menu Utama</a>
   </div>
-
+  
+<div class="wrap">
   <div class="tabs">
     <button type="button" class="tab-btn active" id="btnTab1" onclick="bukaTab(1)">Melayani & Pesanan</button>
     <button type="button" class="tab-btn" id="btnTab2" onclick="bukaTab(2)">Kelola Stok Barang</button>
@@ -70,7 +81,7 @@
       <div style="font-weight:bold; font-size:18px; margin-top:8px;">Total: Rp <span id="totalBayar">0</span></div>
       <input type="number" id="uangSiswa" placeholder="Uang tunai pembeli (Rp)" oninput="hitungKembali()">
       <div style="font-weight:bold; font-size:16px; color:#16a34a;">Kembalian: Rp <span id="kembalian">0</span></div>
-      <button type="button" class="btn-full btn-green" onclick="bayarLangsung()">✓ SELESAIKAN & POTONG STOK</button>
+      <button type="button" class="btn-full btn-green" onclick="bayarLangsung()">✓ KONFIRMASI</button>
       <button type="button" class="btn-full btn-gray" onclick="resetKasir()">↺ Ulangi</button>
     </div>
 
