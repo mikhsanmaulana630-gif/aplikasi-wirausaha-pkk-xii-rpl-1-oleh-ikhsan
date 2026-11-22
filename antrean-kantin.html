@@ -14,12 +14,23 @@
       padding: clamp(12px, 3vw, 28px);
     }
     .wrap { max-width: 960px; width: 100%; margin: 0 auto; }
-    .header {
-      display: flex; justify-content: space-between; align-items: center;
-      background: rgba(255, 255, 255, 0.14); backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      color: white; padding: 16px 20px; border-radius: 16px; margin-bottom: 16px;
+        .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      color: white;
+      padding: 16px clamp(16px, 4vw, 32px);
+      margin-bottom: 18px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
+
     .header strong { font-size: clamp(18px, 2.5vw, 22px); }
     .header a { color: white; text-decoration: none; background: rgba(0, 0, 0, 0.25); padding: 8px 14px; border-radius: 10px; font-size: 14px; font-weight: bold; }
     .grid-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; align-items: start; }
@@ -42,12 +53,12 @@
 </head>
   
 <body>
-<div class="wrap">
-    <div class="header">
+  <div class="header">
     <strong>🍱 Pesan & Antrean Kantin</strong>
     <a href="index.html">← Menu Utama</a>
   </div>
-
+  
+<div class="wrap">
   <div class="card">
     <h3>✍️ Pilih Menu & Form Pemesanan Siswa</h3>
     <input type="text" id="namaSiswa" placeholder="Nama & Kelas (Contoh: Ikhsan - XII RPL 1)">
