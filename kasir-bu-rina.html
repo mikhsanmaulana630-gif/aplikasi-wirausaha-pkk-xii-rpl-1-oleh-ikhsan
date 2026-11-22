@@ -11,18 +11,27 @@
       background: linear-gradient(135deg, #064e3b 0%, #047857 50%, #15803d 100%);
       min-height: 100vh;
       color: #1e293b;
-      padding: clamp(12px, 3vw, 28px);
+      margin: 0;
+      padding: 0; 
     }
-    .wrap { max-width: 960px; width: 100%; margin: 0 auto; }
+    .wrap {
+      max-width: 960px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 clamp(12px, 3vw, 28px) 28px; 
+    }
     .header {
       position: sticky;
       top: 0;
+      left: 0;
+      right: 0;
       z-index: 100;
       width: 100%;
+      border-radius: 0; 
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(15, 23, 42, 0.85);
+      background: rgba(15, 23, 42, 0.92);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid rgba(255, 255, 255, 0.2);
       color: white;
