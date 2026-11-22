@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Antrean Kantin Digital</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 12px; background: #eef2f5; }
+    h2 { text-align: center; background: #0d6efd; color: white; padding: 10px; border-radius: 6px; margin: 0 0 12px; }
+    .card { background: white; padding: 12px; border-radius: 6px; margin-bottom: 12px; border: 1px solid #ddd; }
+    input, select, button { width: 100%; padding: 10px; margin: 6px 0; font-size: 14px; border-radius: 4px; box-sizing: border-box; }
+    .btn-pesan { background: #0d6efd; color: white; font-weight: bold; border: none; cursor: pointer; }
+    .item { border: 1px solid #ccc; padding: 10px; border-radius: 5px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .badge { padding: 3px 7px; border-radius: 4px; font-size: 12px; color: white; font-weight: bold; }
+    .dimasak { background: #fd7e14; } .siap { background: #198754; }
+    .btn-kecil { width: auto; padding: 6px 10px; margin: 0 2px; font-size: 12px; color: white; border: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h2>ANTREAN KANTIN DIGITAL</h2>
+  <div class="card">
+    <strong>1. Pesan Makanan (Siswa)</strong>
+    <input type="text" id="nama" placeholder="Nama & Kelas (Contoh: Andi - XII RPL)">
+    <select id="menu">
+      <option>Nasi Goreng (Rp 12.000)</option>
+      <option>Mie Ayam Bakso (Rp 10.000)</option>
+      <option>Soto Ayam (Rp 10.000)</option>
+      <option>Es Teh Manis (Rp 3.000)</option>
+    </select>
+    <button class="btn-pesan" onclick="pesan()">AMBIL NOMOR ANTREAN</button>
+  </div>
+  <div class="card">
+    <strong>2. Monitor Antrean & Kontrol Penjual</strong>
+    <div id="antrean" style="margin-top:8px;"></div>
+  </div>
+
+  <script>
+    let daftar = JSON.parse(localStorage.getItem('kantin_list')) || [];
+    let no = Number(localStorage.getItem('kantin_no')) || 1;
+
+    function pesan() {
+      let nama = document.getElementById('nama').value.trim();
+      let menu = document.getElementById('menu').value;
+      if (!nama) return alert('Isi nama dan kelas terlebih dahulu!');
+      let kode = 'A-' + String(no++).padStart(2, '0');
+      daftar.push({ id: Date.now(), kode, nama, menu, status: 'Dimasak' });
+      document.getElementById('nama').value = '';
+      update(); alert('Nomor Antrean Anda: ' + kode);
+    }
+    function siap(id) { let x = daftar.find(i => i.id === id); if (x) x.status = 'Siap Diambil'; update(); }
+    function hapus(id) { daftar = daftar.filter(i => i.id !== id); update(); }
+    function update() {
+      localStorage.setItem('kantin_list', JSON.stringify(daftar));
+      localStorage.setItem('kantin_no', no);
+      document.getElementById('antrean').innerHTML = daftar.length ? daftar.map(x => `
+        <div class="item">
+          <div><strong>[${x.kode}] ${x.nama}</strong><br><small>${x.menu}</small><br>
+          <span class="badge ${x.status === 'Dimasak' ? 'dimasak' : 'siap'}">${x.status}</span></div>
+          <div>
+            ${x.status === 'Dimasak' ? `<button class="btn-kecil" style="background:#198754" onclick="siap(${x.id})">Siap</button>` : ''}
+            <button class="btn-kecil" style="background:#dc3545" onclick="hapus(${x.id})">Selesai</button>
+          </div>
+        </div>`).join('') : '<small style="color:#666">Belum ada antrean.</small>';
+    }
+    update();
+  </script>
+</body>
+</html>

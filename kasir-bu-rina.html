@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kasir Ringan Bu Rina</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 12px; background: #f4f6f8; }
+    h2 { text-align: center; background: #1e7e34; color: white; padding: 10px; border-radius: 6px; margin: 0 0 12px; }
+    .card { background: white; padding: 12px; border-radius: 6px; margin-bottom: 12px; border: 1px solid #ddd; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+    button { padding: 12px; font-size: 14px; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; }
+    .btn-item { background: #e9ecef; text-align: left; }
+    .btn-bayar { background: #1e7e34; color: white; width: 100%; margin-top: 8px; }
+    .btn-reset { background: #dc3545; color: white; width: 100%; margin-top: 6px; }
+    input { width: 100%; padding: 10px; font-size: 16px; margin-top: 5px; box-sizing: border-box; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    th, td { border-bottom: 1px solid #ddd; padding: 6px; text-align: left; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <h2>KASIR WARUNG BU RINA</h2>
+  <div class="card">
+    <strong>1. Pilih Barang:</strong>
+    <div class="grid">
+      <button class="btn-item" onclick="tambah('Beras 1kg', 15000)">Beras 1kg<br><small>Rp 15.000</small></button>
+      <button class="btn-item" onclick="tambah('Minyak 1L', 17000)">Minyak 1L<br><small>Rp 17.000</small></button>
+      <button class="btn-item" onclick="tambah('Gula 1kg', 16500)">Gula 1kg<br><small>Rp 16.500</small></button>
+      <button class="btn-item" onclick="tambah('Telur 1/2kg', 14000)">Telur 1/2kg<br><small>Rp 14.000</small></button>
+      <button class="btn-item" onclick="tambah('Mie Instan', 3500)">Mie Instan<br><small>Rp 3.500</small></button>
+      <button class="btn-item" onclick="tambah('Kopi Sachet', 2000)">Kopi Sachet<br><small>Rp 2.000</small></button>
+    </div>
+  </div>
+  <div class="card">
+    <strong>2. Daftar Belanja:</strong>
+    <table><thead><tr><th>Barang</th><th>Qty</th><th>Subtotal</th></tr></thead><tbody id="list"></tbody></table>
+    <h3>Total: Rp <span id="total">0</span></h3>
+    <input type="number" id="bayar" placeholder="Uang Pembeli (Rp)" oninput="hitung()">
+    <h4>Kembalian: Rp <span id="kembali">0</span></h4>
+    <button class="btn-bayar" onclick="simpan()">SIMPAN TRANSAKSI</button>
+    <button class="btn-reset" onclick="reset()">ULANGI</button>
+  </div>
+  <div class="card"><strong>Omzet Hari Ini: Rp <span id="omzet">0</span></strong></div>
+
+  <script>
+    let keranjang = [], omzet = Number(localStorage.getItem('omzet_rina')) || 0;
+    document.getElementById('omzet').innerText = omzet.toLocaleString('id-ID');
+
+    function tambah(nama, harga) {
+      let item = keranjang.find(x => x.nama === nama);
+      item ? item.qty++ : keranjang.push({ nama, harga, qty: 1 });
+      render();
+    }
+    function render() {
+      let html = '', tot = 0;
+      keranjang.forEach(x => { tot += x.harga * x.qty; html += `<tr><td>${x.nama}</td><td>${x.qty}</td><td>Rp ${(x.harga*x.qty).toLocaleString('id-ID')}</td></tr>`; });
+      document.getElementById('list').innerHTML = html;
+      document.getElementById('total').innerText = tot.toLocaleString('id-ID');
+      hitung();
+    }
+    function hitung() {
+      let tot = keranjang.reduce((a, b) => a + b.harga * b.qty, 0);
+      let byr = Number(document.getElementById('bayar').value) || 0;
+      document.getElementById('kembali').innerText = byr >= tot ? (byr - tot).toLocaleString('id-ID') : 'Kurang';
+    }
+    function simpan() {
+      let tot = keranjang.reduce((a, b) => a + b.harga * b.qty, 0);
+      let byr = Number(document.getElementById('bayar').value) || 0;
+      if (!tot || byr < tot) return alert('Cek daftar belanja atau uang bayar!');
+      omzet += tot; localStorage.setItem('omzet_rina', omzet);
+      document.getElementById('omzet').innerText = omzet.toLocaleString('id-ID');
+      alert('Berhasil! Kembalian: Rp ' + (byr - tot).toLocaleString('id-ID'));
+      reset();
+    }
+    function reset() { keranjang = []; document.getElementById('bayar').value = ''; render(); }
+  </script>
+</body>
+</html>
