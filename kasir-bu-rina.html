@@ -99,6 +99,15 @@
       <div id="listAntrean"></div>
     </div>
 
+    <!-- TAMBAHKAN KARTU RIWAYAT INI -->
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid #ecfdf5; padding-bottom:8px; margin-bottom:12px;">
+        <h3 style="border:none; margin:0; padding:0;">📜 Riwayat Pesanan Selesai</h3>
+        <button type="button" class="btn-sm" style="background:#dc2626;" onclick="hapusSemuaRiwayat()">Hapus Riwayat</button>
+      </div>
+      <div id="listRiwayat"></div>
+    </div>
+
     <div class="card" style="background:#ecfdf5; border:1px solid #a7f3d0;">
       <strong style="font-size:17px; color:#065f46;">💰 Total Omzet Hari Ini: Rp <span id="omzet">0</span></strong>
     </div>
@@ -126,14 +135,17 @@
 
   let menuKantin = JSON.parse(localStorage.getItem('kantin_menu_data')) || defaultMenu;
   let antrean = JSON.parse(localStorage.getItem('kantin_orders_data')) || [];
+  let riwayatPesanan = JSON.parse(localStorage.getItem('kantin_history_data')) || []; // <--- TAMBAHAN DATA RIWAYAT
   let omzet = Number(localStorage.getItem('kantin_omzet_data')) || 0;
   let keranjang = [];
 
   function simpanData() {
     localStorage.setItem('kantin_menu_data', JSON.stringify(menuKantin));
     localStorage.setItem('kantin_orders_data', JSON.stringify(antrean));
+    localStorage.setItem('kantin_history_data', JSON.stringify(riwayatPesanan)); // <--- SIMPAN RIWAYAT
     localStorage.setItem('kantin_omzet_data', omzet);
   }
+
 
   function bukaTab(no) {
     document.getElementById('tab1').className = no === 1 ? '' : 'hidden';
@@ -154,20 +166,34 @@
       </button>
     `).join('');
 
+    // 1. Render Daftar Pesanan Siswa (Tombol Selesai terkunci sebelum Siap Diambil)
     const boxAntrean = document.getElementById('listAntrean');
     boxAntrean.innerHTML = antrean.length ? antrean.map(a => `
       <div class="order-box">
         <div>
           <strong>[${a.kode}] ${a.siswa}</strong><br>
           <small>${a.item} (Rp ${a.harga.toLocaleString('id-ID')})</small><br>
-          <span style="font-size:11px; font-weight:bold; color:${a.status === 'Siap Diambil' ? '#16a34a' : '#d97706'};">Status: ${a.status}</span>
+          <span style="font-size:12px; font-weight:bold; color:${a.status === 'Siap Diambil' ? '#16a34a' : '#d97706'};">Status: ${a.status}</span>
         </div>
         <div>
-          ${a.status === 'Dimasak' ? `<button class="btn-sm" style="background:#2563eb;" onclick="ubahSiap(${a.id})">Siap</button>` : ''}
-          <button class="btn-sm" style="background:#16a34a;" onclick="selesaiAntrean(${a.id})">Selesai</button>
+          ${a.status === 'Dimasak' 
+            ? `<button type="button" class="btn-sm" style="background:#2563eb;" onclick="ubahSiap(${a.id})">Tandai Siap</button>` 
+            : `<button type="button" class="btn-sm" style="background:#16a34a;" onclick="selesaiAntrean(${a.id})">Selesai</button>`}
         </div>
       </div>
-    `).join('') : '<small style="color:#64748b;">Belum ada pesanan dari siswa.</small>';
+    `).join('') : '<small style="color:#64748b;">Belum ada pesanan aktif dari siswa.</small>';
+
+    // 2. Render Daftar Riwayat Pesanan Selesai
+    const boxRiwayat = document.getElementById('listRiwayat');
+    boxRiwayat.innerHTML = riwayatPesanan.length ? riwayatPesanan.map(r => `
+      <div class="order-box" style="background:#f1f5f9;">
+        <div>
+          <strong>[${r.kode}] ${r.siswa}</strong> <small style="color:#64748b;">(${r.waktuSelesai})</small><br>
+          <small>${r.item} — <b>Rp ${r.harga.toLocaleString('id-ID')}</b></small>
+        </div>
+        <span style="font-size:11px; font-weight:bold; color:#16a34a;">✓ Selesai</span>
+      </div>
+    `).join('') : '<small style="color:#64748b;">Belum ada riwayat pesanan selesai.</small>';
 
     document.getElementById('listStok').innerHTML = menuKantin.map(m => `
       <div class="stok-row">
@@ -202,10 +228,28 @@
   function selesaiAntrean(id) {
     let idx = antrean.findIndex(x => x.id === id);
     if (idx > -1) {
+      // Cegah penyelesaian jika belum berstatus Siap Diambil
+      if (antrean[idx].status !== 'Siap Diambil') {
+        return alert('Pesanan harus ditandai "Siap Diambil" terlebih dahulu sebelum diselesaikan!');
+      }
+
+      let jam = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+      riwayatPesanan.unshift({ ...antrean[idx], status: 'Selesai', waktuSelesai: jam });
       omzet += antrean[idx].harga;
       antrean.splice(idx, 1);
-      simpanData(); renderSemua();
-      alert('Pesanan selesai & omzet ditambahkan!');
+      
+      simpanData();
+      renderSemua();
+      alert('Pesanan selesai, dipindahkan ke riwayat, dan omzet ditambahkan!');
+    }
+  }
+
+  function hapusSemuaRiwayat() {
+    if (riwayatPesanan.length === 0) return alert('Data riwayat masih kosong.');
+    if (confirm('Apakah Anda yakin ingin menghapus seluruh data riwayat pesanan selesai? Tindakan ini tidak dapat dibatalkan.')) {
+      riwayatPesanan = [];
+      simpanData();
+      renderSemua();
     }
   }
 
